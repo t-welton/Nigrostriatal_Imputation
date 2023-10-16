@@ -2,7 +2,7 @@
 ROOT="~"
 GWAS_TOOLS="$ROOT/summary-gwas-imputation/src"
 METAXCAN="$ROOT/MetaXcan/software"
-DATA="$ROOT/data"
+DATA="$ROOT"
 OUTPUT="$ROOT/outputs_nigro"
 MODEL="$ROOT/models"
 LIFTOVER="$ROOT/liftover"
@@ -10,12 +10,21 @@ REFERENCE="$ROOT/reference_panel"
 
 mkdir $OUTPUT
 
-for idp in 0003_dis_qsm_left_caudate.txt.gz 0004_dis_qsm_right_caudate.txt.gz 0005_dis_qsm_right_putamen.txt.gz 0006_dis_qsm_right_putamen.txt.gz 0015_dis_qsm_left_SN.txt.gz 0016_dis_qsm_right_SN.txt.gz 0033_dis_t2star_left_SN.txt.gz 0034_dis_t2star_right_SN.txt.gz 1440_dis_t2star_left_caudate.txt.gz 1441_dis_t2star_right_caudate.txt.gz 1442_dis_t2star_left_putamen.txt.gz 1443_dis_t2star_right_putamen.txt.gz
+echo "ROOT: $ROOT"
+echo "GWAS_TOOLS: $GWAS_TOOLS"
+echo "METAXCAN: $METAXCAN"
+echo "DATA: $DATA"
+echo "OUTPUT: $OUTPUT"
+echo "MODEL: $MODEL"
+echo "LIFTOVER: $LIFTOVER"
+echo "REFERENCE: $REFERENCE"
+
+for idp in 0003.txt.gz 0004.txt.gz 0005.txt.gz 0006.txt.gz 0015.txt.gz 0016.txt.gz 0033.txt.gz 0034.txt.gz 1440.txt.gz 1441.txt.gz 1442.txt.gz 1443.txt.gz
 do
-    break
 	# harmonisation
+	echo "discovery harmonisation idp $idp"
 	python $GWAS_TOOLS/gwas_parsing.py \
-		-gwas_file $DATA/${idp} \
+		-gwas_file $DATA/dis/${idp} \
 		-liftover $LIFTOVER/hg19ToHg38.over.chain.gz \
 		-output_column_map chr chromosome \
 		-output_column_map rsid variant_id \
@@ -31,16 +40,16 @@ do
 		-separator " " \
 		-output_order variant_id panel_variant_id chromosome position effect_allele non_effect_allele pminuslog10 pvalue zscore effect_size standard_error sample_size n_cases frequency \
 		-snp_reference_metadata $REFERENCE/variant_metadata.txt.gz METADATA \
-		-output $OUTPUT/${idp}_harmonised.txt.gz \
+		-output $OUTPUT/dis/${idp}_harmonised.txt.gz \
         --keep_all_original_entries
 done
 
-for idp in 0003_rep_qsm_left_caudate.txt.gz 0004_rep_qsm_right_caudate.txt.gz 0005_rep_qsm_right_putamen.txt.gz 0006_rep_qsm_right_putamen.txt.gz 0015_rep_qsm_left_SN.txt.gz 0016_rep_qsm_right_SN.txt.gz 0033_rep_t2star_left_SN.txt.gz 0034_rep_t2star_right_SN.txt.gz 1440_rep_t2star_left_caudate.txt.gz 1441_rep_t2star_right_caudate.txt.gz 1442_rep_t2star_left_putamen.txt.gz 1443_rep_t2star_right_putamen.txt.gz
+for idp in 0003.txt.gz 0004.txt.gz 0005.txt.gz 0006.txt.gz 0015.txt.gz 0016.txt.gz 0033.txt.gz 0034.txt.gz 1440.txt.gz 1441.txt.gz 1442.txt.gz 1443.txt.gz
 do
-    break
 	# harmonisation
+	echo "replication harmonisation idp $idp"
 	python $GWAS_TOOLS/gwas_parsing.py \
-		-gwas_file $DATA/${idp} \
+		-gwas_file $DATA/rep/${idp} \
 		-liftover $LIFTOVER/hg19ToHg38.over.chain.gz \
 		-output_column_map chr chromosome \
 		-output_column_map rsid variant_id \
@@ -56,9 +65,11 @@ do
 		-separator " " \
 		-output_order variant_id panel_variant_id chromosome position effect_allele non_effect_allele pminuslog10 pvalue zscore effect_size standard_error sample_size n_cases frequency \
 		-snp_reference_metadata $REFERENCE/variant_metadata.txt.gz METADATA \
-		-output $OUTPUT/${idp}_harmonised.txt.gz \
+		-output $OUTPUT/rep/${idp}_harmonised.txt.gz \
         --keep_all_original_entries
 done
+
+exit
 
 for idp in 0003_dis_qsm_left_caudate.txt.gz 0004_dis_qsm_right_caudate.txt.gz 0005_dis_qsm_right_putamen.txt.gz 0006_dis_qsm_right_putamen.txt.gz 0015_dis_qsm_left_SN.txt.gz 0016_dis_qsm_right_SN.txt.gz 0033_dis_t2star_left_SN.txt.gz 0034_dis_t2star_right_SN.txt.gz 1440_dis_t2star_left_caudate.txt.gz 1441_dis_t2star_right_caudate.txt.gz 1442_dis_t2star_left_putamen.txt.gz 1443_dis_t2star_right_putamen.txt.gz 0003_rep_qsm_left_caudate.txt.gz 0004_rep_qsm_right_caudate.txt.gz 0005_rep_qsm_right_putamen.txt.gz 0006_rep_qsm_right_putamen.txt.gz 0015_rep_qsm_left_SN.txt.gz 0016_rep_qsm_right_SN.txt.gz 0033_rep_t2star_left_SN.txt.gz 0034_rep_t2star_right_SN.txt.gz 1440_rep_t2star_left_caudate.txt.gz 1441_rep_t2star_right_caudate.txt.gz 1442_rep_t2star_left_putamen.txt.gz 1443_rep_t2star_right_putamen.txt.gz
 do
