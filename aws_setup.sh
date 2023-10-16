@@ -1,5 +1,5 @@
 # download and run this script
-
+#cd ~
 #sudo yum update
 #sudo yum -y install git
 #git clone https://github.com/t-welton/Nigrostriatal_Imputation
@@ -19,25 +19,23 @@ conda init bash
 bash
 
 # download data
-
 mkdir ~/data
 mkdir ~/data/dis
 mkdir ~/data/rep
-wget -P ~/data https://www.fmrib.ox.ac.uk/ukbiobank/gwas_resources/QSMandT2s_IDPs.tar.gz	#10GB
-wget -P ~/data https://www.fmrib.ox.ac.uk/ukbiobank/gwas_resources/QSMandT2s_IDPs_repro.tar.gz	#10GB
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1440.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1440.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1441.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1441.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1442.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1442.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1443.txt.gz
-wget -P ~/data https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1443.txt.gz
-tar –xvzf ~/data/QSMandT2s_IDPs.tar.gz -C ~/data/dis
-tar –xvzf ~/data/QSMandT2s_IDPs_repro.tar.gz -C ~/data/rep
+wget -P ~/data/dis https://www.fmrib.ox.ac.uk/ukbiobank/gwas_resources/QSMandT2s_IDPs.tar.gz	#10GB
+wget -P ~/data/rep https://www.fmrib.ox.ac.uk/ukbiobank/gwas_resources/QSMandT2s_IDPs_repro.tar.gz	#10GB
+wget -P ~/data/dis https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1440.txt.gz
+wget -P ~/data/rep https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1440.txt.gz
+wget -P ~/data/dis https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1441.txt.gz
+wget -P ~/data/rep https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1441.txt.gz
+wget -P ~/data/dis https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1442.txt.gz
+wget -P ~/data/rep https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1442.txt.gz
+wget -P ~/data/dis https://open.win.ox.ac.uk/ukbiobank/big40/release2/stats/1443.txt.gz
+wget -P ~/data/rep https://open.win.ox.ac.uk/ukbiobank/big40/release2/repro/1443.txt.gz
+tar –xvzf ~/data/dis/QSMandT2s_IDPs.tar.gz -C ~/data/dis
+tar –xvzf ~/data/rep/QSMandT2s_IDPs_repro.tar.gz -C ~/data/rep
 
 # download gtex models
-
 mkdir ~/models
 wget -P ~/models https://zenodo.org/record/3518299/files/mashr_eqtl.tar
 tar –xvzf ~/models/mashr_eqtl.tar -C ~/models
@@ -105,7 +103,7 @@ curl $'https://public.boxcloud.com/d/1/b1\u002152DPESTLQTtn1lQYhWsszmWTjfDTmwb82
 #22
 curl $'https://public.boxcloud.com/d/1/b1\u0021oNcY_FzmA1doBnreczOeJ94t_vl7q0QFVsSW0GJgaGyDQ1xZ-ENzo4m5OQkRzMYlxah1aAUDoyLDVLqKtWFXM_uPhWszziR6V-WqMlV-5q6j99Y3hnvi2ipgslwcTH1eY9QRn7Mgc0_l0PtmMxIlG_KZ3BPCkSnTljhB9zkzZK83lmznMseejAtL86wI99bXhWu5FX-K3W84zipuZsAYV9ohuoX_HwrxqCaHnTN5Okw1egT9Ng-tRQYKOuWhlPGFAkLdO9a2tUqB3C6NLiCYH3TfrTWOrh_FlbgxAJei9ABD8YwxxkKcLtfhZkPkVofhO57Fs_akVzWNWqOHrz-GzUR2Sx6Luqy6MkXBRu6VnPmbdq0EA3JUDoACiNa3PQ3gJ64JVUcKaKjnN8HS9F8Py168M68SkPxEgfz1j1ojxASoFV_T72CM1_e1LwMvtaUP7QSeEv3Erty3eIULQCEFSljoN8LNTQxkPx7neRwqNjt-C0a_Ju0neXsX6zupw4WM72MvCRPiJOomo7su0cD4Qb40aIA9SrNXrtqqgGYdyoaJzVl-ziDk2BkcFditPNsYbAWzi53Cvv3UZe21wfrVxdH_LIlX7FY5bW48MUfErruieM7Vxu0-I2d_w-bGQU8bUey_BE5u8NAUrzMNj8p7iSt7mXD-CW9u6c0yxRNTQAMJMEgjtGcY_TEndaFV-l5j4gHYSlOfGrJWDBXD1Mt87fyPeM781ZLwjdvJ8WyO6yqoRtfO67mj_3vCwndzXL3OkOPwimLNVtUcEQ3P0dM7_kBX2toXOD6qx4pYDU0aNHhyDA_nSmhD7vTIVjzWNep6vdXKISPsOxBQDXDEU5rDeZzs7X7DogzDnVjnVESh6bpNvHZsn6v2wOYpyasdIoiLfeqR0Jih46IA835HKbiKsFxj7iJOf5dHTNhxenVlShq4pjGzGjinsyWS1r-YUqNBJsmyxibKMI2L4Thzj8YLlPw1SIPuZWiWxGn157RGiqjj1rZf2S9SCIOCpu139d_6qLAcrwV9CRKiDzvAwRd5pzz9VVBA9b_mYF8vgETZbtyVvnhNFwqMbokHGISyfEIs_a-LW6sSJA0Mx-R10E1q8_h1HoBUnpfak37jW5AGvV_nZVlaHviOVVGNq1vTceWnF5-WKIqpFCgomg9-8d9Qodo1iJdFCzM1WQCOrAQrIId3jO1JS7LEIRxi5_208mZ2g0d_-t7Paf9q3Qm59Og3KCSu8svIFf2fF5pYALOHK3xjWxNhZReb/download' --compressed --output ~/reference_panel/chr22.variants.parquet
 
-# run imputation script
+# run hemonisation + imputation script
 #chmod u+x Nigrostriatal_Imputation/spredixcan_nigro_aws.sh
 #./Nigrostriatal_Imputation/spredixcan_nigro_aws.sh
 

@@ -2,13 +2,15 @@
 ROOT="~"
 GWAS_TOOLS="$ROOT/summary-gwas-imputation/src"
 METAXCAN="$ROOT/MetaXcan/software"
-DATA="$ROOT"
+DATA="$ROOT/data"
 OUTPUT="$ROOT/outputs_nigro"
 MODEL="$ROOT/models"
 LIFTOVER="$ROOT/liftover"
 REFERENCE="$ROOT/reference_panel"
 
 mkdir $OUTPUT
+mkdir $OUTPUT/dis
+mkdir $OUTPUT/rep
 
 echo "ROOT: $ROOT"
 echo "GWAS_TOOLS: $GWAS_TOOLS"
@@ -22,7 +24,7 @@ echo "REFERENCE: $REFERENCE"
 for idp in 0003.txt.gz 0004.txt.gz 0005.txt.gz 0006.txt.gz 0015.txt.gz 0016.txt.gz 0033.txt.gz 0034.txt.gz 1440.txt.gz 1441.txt.gz 1442.txt.gz 1443.txt.gz
 do
 	# harmonisation
-	echo "discovery harmonisation idp $idp"
+	echo "~~~~~~~~~~ discovery harmonisation idp $idp ~~~~~~~~~~"
 	python $GWAS_TOOLS/gwas_parsing.py \
 		-gwas_file $DATA/dis/${idp} \
 		-liftover $LIFTOVER/hg19ToHg38.over.chain.gz \
@@ -47,7 +49,7 @@ done
 for idp in 0003.txt.gz 0004.txt.gz 0005.txt.gz 0006.txt.gz 0015.txt.gz 0016.txt.gz 0033.txt.gz 0034.txt.gz 1440.txt.gz 1441.txt.gz 1442.txt.gz 1443.txt.gz
 do
 	# harmonisation
-	echo "replication harmonisation idp $idp"
+	echo "~~~~~~~~~~ replication harmonisation idp $idp ~~~~~~~~~~"
 	python $GWAS_TOOLS/gwas_parsing.py \
 		-gwas_file $DATA/rep/${idp} \
 		-liftover $LIFTOVER/hg19ToHg38.over.chain.gz \
@@ -71,17 +73,17 @@ done
 
 exit
 
-for idp in 0003_dis_qsm_left_caudate.txt.gz 0004_dis_qsm_right_caudate.txt.gz 0005_dis_qsm_right_putamen.txt.gz 0006_dis_qsm_right_putamen.txt.gz 0015_dis_qsm_left_SN.txt.gz 0016_dis_qsm_right_SN.txt.gz 0033_dis_t2star_left_SN.txt.gz 0034_dis_t2star_right_SN.txt.gz 1440_dis_t2star_left_caudate.txt.gz 1441_dis_t2star_right_caudate.txt.gz 1442_dis_t2star_left_putamen.txt.gz 1443_dis_t2star_right_putamen.txt.gz 0003_rep_qsm_left_caudate.txt.gz 0004_rep_qsm_right_caudate.txt.gz 0005_rep_qsm_right_putamen.txt.gz 0006_rep_qsm_right_putamen.txt.gz 0015_rep_qsm_left_SN.txt.gz 0016_rep_qsm_right_SN.txt.gz 0033_rep_t2star_left_SN.txt.gz 0034_rep_t2star_right_SN.txt.gz 1440_rep_t2star_left_caudate.txt.gz 1441_rep_t2star_right_caudate.txt.gz 1442_rep_t2star_left_putamen.txt.gz 1443_rep_t2star_right_putamen.txt.gz
+for idp in 0003.txt.gz 0004.txt.gz 0005.txt.gz 0006.txt.gz 0015.txt.gz 0016.txt.gz 0033.txt.gz 0034.txt.gz 1440.txt.gz 1441.txt.gz 1442.txt.gz 1443.txt.gz
 do
 	# imputation
 	for chr in {1..22}
 	do
 		for sub_batch in {0..9}
 		do
-			echo "~~~~~~~~~~ Imputation idp ${idp} chromosome ${chr} sub-batch ${sub_batch} ~~~~~~~~~~"
+			echo "~~~~~~~~~~ Discovery imputation idp ${idp} chromosome ${chr} sub-batch ${sub_batch} ~~~~~~~~~~"
 			python $GWAS_TOOLS/gwas_summary_imputation.py \
 				-by_region_file $REFERENCE/eur_ld.bed.gz \
-				-gwas_file $OUTPUT/${idp}_harmonised.txt.gz \
+				-gwas_file $OUTPUT/dis/${idp}_harmonised.txt.gz \
 				-parquet_genotype $REFERENCE/chr${chr}.variants.parquet \
 				-parquet_genotype_metadata $REFERENCE/variant_metadata.parquet \
 				-window 100000 \
@@ -92,7 +94,33 @@ do
 				-sub_batches 10 \
 				-sub_batch ${sub_batch} \
 				--standardise_dosages \
-				-output $OUTPUT/${idp}_harmonised_imputed_chr${chr}_sb${sub_batch}_reg0.1_ff0.01_by_region.txt.gz
+				-output $OUTPUT/dis/${idp}_harmonised_imputed_chr${chr}_sb${sub_batch}_reg0.1_ff0.01_by_region.txt.gz
+		done
+	done
+done
+
+for idp in 0003.txt.gz 0004.txt.gz 0005.txt.gz 0006.txt.gz 0015.txt.gz 0016.txt.gz 0033.txt.gz 0034.txt.gz 1440.txt.gz 1441.txt.gz 1442.txt.gz 1443.txt.gz
+do
+	# imputation
+	for chr in {1..22}
+	do
+		for sub_batch in {0..9}
+		do
+			echo "~~~~~~~~~~ Replication imputation idp ${idp} chromosome ${chr} sub-batch ${sub_batch} ~~~~~~~~~~"
+			python $GWAS_TOOLS/gwas_summary_imputation.py \
+				-by_region_file $REFERENCE/eur_ld.bed.gz \
+				-gwas_file $OUTPUT/rep/${idp}_harmonised.txt.gz \
+				-parquet_genotype $REFERENCE/chr${chr}.variants.parquet \
+				-parquet_genotype_metadata $REFERENCE/variant_metadata.parquet \
+				-window 100000 \
+				-parsimony 7 \
+				-chromosome ${chr} \
+				-regularization 0.1 \
+				-frequency_filter 0.01 \
+				-sub_batches 10 \
+				-sub_batch ${sub_batch} \
+				--standardise_dosages \
+				-output $OUTPUT/rep/${idp}_harmonised_imputed_chr${chr}_sb${sub_batch}_reg0.1_ff0.01_by_region.txt.gz
 		done
 	done
 done
@@ -110,6 +138,7 @@ do
 		-output $OUTPUT/0${idp_no}_harmonised_merged.txt.gz
 done
 
+exit
 
 # Run S-PrediXcan
 for idp_no in 137 #{137..164} 194 211
