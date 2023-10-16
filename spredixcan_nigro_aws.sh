@@ -2,7 +2,7 @@
 ROOT="~"
 GWAS_TOOLS="$ROOT/summary-gwas-imputation/src"
 METAXCAN="$ROOT/MetaXcan/software"
-DATA="$ROOT"
+DATA="$ROOT/data"
 OUTPUT="$ROOT/outputs_nigro"
 MODEL="$ROOT/models"
 LIFTOVER="$ROOT/liftover"
